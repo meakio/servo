@@ -9,7 +9,7 @@
 use app_units::Au;
 use dwrote;
 use dwrote::{Font, FontFace, FontFile};
-use dwrote::{FontWeight, FontStretch};
+use dwrote::{FontWeight, FontStretch, FontStyle};
 use font::{FontHandleMethods, FontMetrics, FontTableMethods};
 use font::{FontTableTag, FractionalPixel};
 use platform::font_template::FontTemplateData;
@@ -20,7 +20,7 @@ use std::sync::Arc;
 use style::computed_values::font_stretch::T as StyleFontStretch;
 use style::computed_values::font_weight::T as StyleFontWeight;
 use style::values::computed::specified::font::FontStretchKeyword;
-use style::values::computed::font::FontStyle;
+use style::values::computed::font::FontStyle as StyleFontStyle;
 use style::values::generics::NonNegative;
 use style::values::generics::font::FontStyle as GenericFontStyle;
 use text::glyph::GlyphId;
@@ -102,7 +102,7 @@ struct FontInfo {
     face_name: String,
     weight: StyleFontWeight,
     stretch: StyleFontStretch,
-    style: FontStyle,
+    style: StyleFontStyle,
 }
 
 impl FontInfo {
@@ -177,9 +177,9 @@ impl FontInfo {
         });
 
         let style = if italic_bool {
-            GenericFontStyle::Italic
+            GenericStyleFontStyle::Italic
         } else {
-            GenericFontStyle::Normal
+            GenericStyleFontStyle::Normal
         };
 
         Ok(FontInfo {
@@ -192,7 +192,11 @@ impl FontInfo {
     }
 
     fn new_from_font(font: &Font) -> Result<FontInfo, ()> {
-        let style = font.style();
+        let style = match font.style() {
+            FontStyle::Normal => GenericFontStyle::Normal,
+            FontStyle::Oblique => GenericFontStyle::Oblique(StyleFontStyle::default_angle()),
+            FontStyle::Italic => GenericFontStyle::Italic,
+        };
         let weight = StyleFontWeight(match font.weight() {
             FontWeight::Thin => 100.,
             FontWeight::ExtraLight => 200.,
@@ -298,7 +302,7 @@ impl FontHandleMethods for FontHandle {
         Some(self.info.face_name.clone())
     }
 
-    fn style(&self) -> FontStyle {
+    fn style(&self) -> StyleFontStyle {
         self.info.style
     }
 
