@@ -10,7 +10,6 @@ use servo_atoms::Atom;
 use std::fmt::{Debug, Error, Formatter};
 use std::io::Error as IoError;
 use std::sync::{Arc, Weak};
-use std::u32;
 use style::computed_values::font_stretch::T as FontStretch;
 use style::computed_values::font_style::T as FontStyle;
 use style::properties::style_structs::Font as FontStyleStruct;
