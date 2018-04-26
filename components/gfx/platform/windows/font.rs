@@ -19,10 +19,10 @@ use servo_atoms::Atom;
 use std::sync::Arc;
 use style::computed_values::font_stretch::T as StyleFontStretch;
 use style::computed_values::font_weight::T as StyleFontWeight;
-use style::values::computed::specified::font::FontStretchKeyword;
 use style::values::computed::font::FontStyle as StyleFontStyle;
 use style::values::generics::NonNegative;
 use style::values::generics::font::FontStyle as GenericFontStyle;
+use style::values::specified::font::FontStretchKeyword;
 use text::glyph::GlyphId;
 use truetype;
 
