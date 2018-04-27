@@ -174,12 +174,12 @@ impl FontInfo {
             8 => FontStretchKeyword::ExtraExpanded,
             9 => FontStretchKeyword::UltraExpanded,
             _ => return Err(()),
-        });
+        }.compute());
 
         let style = if italic_bool {
-            GenericStyleFontStyle::Italic
+            GenericFontStyle::Italic
         } else {
-            GenericStyleFontStyle::Normal
+            GenericFontStyle::Normal
         };
 
         Ok(FontInfo {
